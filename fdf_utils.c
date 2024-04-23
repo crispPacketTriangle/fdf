@@ -16,34 +16,34 @@ void	draw_vecs(t_maps *maps, void *mlx_ptr, void *win_ptr)
 		j = 0;
 		while (j < maps->xaxis)
 		{
-			mlx_pixel_put(mlx_ptr, win_ptr, (int)maps->map_vec[i][j].x, (int)maps->map_vec[i][j].y, 0x00888825);
+			mlx_pixel_put(mlx_ptr, win_ptr, (int)maps->map_vec[i][j].x, (int)maps->map_vec[i][j].y, 0x00FFFFFF); //0x00888825
 			j++;
 		}
 		i++;
 	}
 }
 
-void	calc_vect(t_maps *maps, double cell)
+void	calc_vect(t_maps *maps, t_vars *p_vars)
 {
 	t_vec	origin;
 	int		i;
 	int		j;
 	
-	origin.x = 1200;
-	origin.y = 200;
+	origin.x = p_vars->originx;
+	origin.y = p_vars->originy;
 	i = 0;
 	while (i < maps->yaxis)
 	{
 		j = 0;
 		while (j < maps->xaxis)
 		{
-			maps->map_vec[i][j].x = origin.x + (j * cell);
-			maps->map_vec[i][j].y = origin.y + (j * (cell / 2)) + (maps->map_vec[i][j].z * -1 * 1.5); // rather than 2 multiply by #define SCALE
-			maps->map_vec[i][j].y_o = origin.y + (j * (cell / 2));
+			maps->map_vec[i][j].x = origin.x + (j * p_vars->scale);
+			maps->map_vec[i][j].y = origin.y + (j * (p_vars->scale / 2)) + (maps->map_vec[i][j].z * -1 * (p_vars->scale / p_vars->z_scale)); // rather than 2 multiply by #define SCALE
+			maps->map_vec[i][j].y_o = origin.y + (j * (p_vars->scale / 2));
 			j++;
 		} 
-		origin.x -= (cell);
-		origin.y += (cell / 2); // /2
+		origin.x -= (p_vars->scale);
+		origin.y += (p_vars->scale / 2); // /2
 		i++;
 	}
 }
@@ -61,6 +61,8 @@ int	calc_axes(t_maps *maps, char *filename)
 	if (fd < 0)
 		return (1);
 	line = get_next_line(fd);
+	if (!line)
+		return (1);
 	p_line = ft_split(line, ' ');
 	maps->xaxis = 0;
 	i = 0;
@@ -74,7 +76,7 @@ int	calc_axes(t_maps *maps, char *filename)
 	{
 		maps->yaxis++;
 		line = get_next_line(fd);
-		printf("%s", line);
+		//printf("%s", line);
 	}
 	free(p_line);
 	close(fd);
@@ -99,7 +101,7 @@ void	free_2d_arr(char **arr)
 int	init_arrs(t_maps *maps)
 {
 	int	i;
-
+	
 	maps->map_vec = malloc(maps->yaxis * sizeof(t_vec *));
 	if (!maps->map_vec)
 		return (1);
@@ -177,19 +179,15 @@ void	draw_x_edges(t_maps *maps, void *mlx_ptr, void *win_ptr)
 		j = 0;
 		while (j < maps->xaxis - 1)
 		{
-			ed.colour = 0x000000FF;
+			ed.colour = 0x00006600;
 			ed.g = gradient(maps->map_vec[i][j].x, maps->map_vec[i][j + 1].x, maps->map_vec[i][j].y, maps->map_vec[i][j + 1].y);
-			ed.g_o = gradient(maps->map_vec[i][j].x, maps->map_vec[i][j + 1].x, maps->map_vec[i][j].y_o, maps->map_vec[i][j + 1].y_o);
 			ed.x = maps->map_vec[i][j].x;
 			ed.y = maps->map_vec[i][j].y;
-			ed.y_o = maps->map_vec[i][j].y_o;
 			while (ed.x < maps->map_vec[i][j + 1].x)
 			{
-				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y_o, ed.colour);
-				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, 0x00FFFFFF);
+				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, 0x00FFFFCC);
 				ed.x++;
 				ed.y += ed.g;
-				ed.y_o += ed.g_o;
 			}
 			j++;
 		}
@@ -197,16 +195,38 @@ void	draw_x_edges(t_maps *maps, void *mlx_ptr, void *win_ptr)
 	}
 }
 
-double	c_value(t_edge *ed, t_maps *maps, int i, int j)
+//////////////////////////////////////////////////////////////////////////////////////
+void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
-	double	rel_z;
+	int		i;
+	int		j;
+	int		dr;
+	t_edge	ed;
 	
-	rel_z = maps->map_vec[i][j].y_o + ed->y - ed->y_o;
-
-	return (rel_z);
+	i = 0;
+	while (i < maps->yaxis)
+	{
+		j = 0;
+		while (j < maps->xaxis - 1)
+		{
+			ed.colour = 0x00003300;
+			ed.g_o = gradient(maps->map_vec[i][j].x, maps->map_vec[i][j + 1].x, maps->map_vec[i][j].y_o, maps->map_vec[i][j + 1].y_o);
+			ed.x = maps->map_vec[i][j].x;
+			ed.y_o = maps->map_vec[i][j].y_o;
+			while (ed.x < maps->map_vec[i][j + 1].x)
+			{
+				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y_o, ed.colour);
+				ed.x++;
+				ed.y_o += ed.g_o;
+			}
+			j++;
+		}
+		i++;
+	}
 }
+//////////////////////////////////////////////////////////////////////////////////////
 
-void	draw_y_edges(t_maps *maps, void * mlx_ptr, void *win_ptr)
+void	draw_y_edges(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	int		i;
 	int		j;
@@ -218,7 +238,45 @@ void	draw_y_edges(t_maps *maps, void * mlx_ptr, void *win_ptr)
 		j = 0;
 		while (j < maps->xaxis)
 		{
-			ed.colour = 0x000000FF;
+			ed.g = gradient(maps->map_vec[i][j].y, maps->map_vec[i + 1][j].y, maps->map_vec[i][j].x, maps->map_vec[i + 1][j].x);
+			ed.x = maps->map_vec[i][j].x;
+			ed.y = maps->map_vec[i][j].y;
+			while (ed.y < maps->map_vec[i + 1][j].y)
+			{
+				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, 0x00FFFFCC);
+				ed.x+= ed.g;
+				ed.y++;
+			}
+			// does this apply in some cases to the x axis too?
+			if (maps->map_vec[i][j].y > maps->map_vec[i + 1][j].y)
+			{
+				while (ed.x > maps->map_vec[i + 1][j].x)
+				{
+					mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, 0x00FFFFCC);
+					ed.x-= ed.g;
+					ed.y--;
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+void	draw_y_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
+{
+	int		i;
+	int		j;
+	t_edge	ed;
+
+	i = 0;
+	while (i < maps->yaxis - 1)
+	{
+		j = 0;
+		while (j < maps->xaxis)
+		{
+			ed.colour = 0x00003300;
 			ed.g_o = gradient(maps->map_vec[i][j].y_o, maps->map_vec[i + 1][j].y_o, maps->map_vec[i][j].x, maps->map_vec[i + 1][j].x);		
 			ed.x = maps->map_vec[i][j].x;
 			ed.y_o = maps->map_vec[i][j].y_o;
@@ -228,33 +286,12 @@ void	draw_y_edges(t_maps *maps, void * mlx_ptr, void *win_ptr)
 				ed.x+= ed.g_o;
 				ed.y_o++;
 			}
-			
-			ed.g = gradient(maps->map_vec[i][j].y, maps->map_vec[i + 1][j].y, maps->map_vec[i][j].x, maps->map_vec[i + 1][j].x);
-			ed.x = maps->map_vec[i][j].x;
-			ed.y = maps->map_vec[i][j].y;
-
-			while (ed.y < maps->map_vec[i + 1][j].y)
-			{
-				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, 0x00FFFFFF);
-				ed.x+= ed.g;
-				ed.y++;
-			}
-			// does this apply in some cases to the x axis too?
-			if (maps->map_vec[i][j].y > maps->map_vec[i + 1][j].y)
-			{
-				while (ed.x > maps->map_vec[i + 1][j].x)
-				{
-					mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, 0x00FFFFFF);
-					ed.x-= ed.g;
-					ed.y--;
-				}
-			}
-
 			j++;
 		}
 		i++;
 	}
 }
+//////////////////////////////////////////////////////////////////////////////////////
 
 int	pix_colour(int val, t_maps *maps, t_edge *ed)
 {
