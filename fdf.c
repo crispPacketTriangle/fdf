@@ -95,7 +95,7 @@ int	main(int argc, char **argv)
 int	key_hook(int keycode, t_vars *p_vars)
 {
 	// test keycode on different machines, could vary
-	printf("%d\n", keycode);
+	//printf("%d\n", keycode);
 	if (65307 == keycode)
 	{
 		// todo: free objects
