@@ -75,15 +75,16 @@ int	calc_axes(t_maps *maps, char *filename)
 	while (line)
 	{
 		maps->yaxis++;
+		free(line); //printf("%s", line);
 		line = get_next_line(fd);
-		//printf("%s", line);
 	}
-	free(p_line);
+	free(line);
+	free_p(p_line);
 	close(fd);
 	return (0);
 }
 
-void	free_2d_arr(char **arr)
+void	free_2d_arr(t_vec **arr)
 {
 	int	i;
 
@@ -91,6 +92,7 @@ void	free_2d_arr(char **arr)
 	while (arr[i])
 	{
 		free(arr[i]);
+		i++;
 	}
 	free(arr);
 }
@@ -140,9 +142,24 @@ void	init_zaxis(t_maps *maps, char *filename)
 			maps->map_vec[i][j].z = ft_atoi(p_line[j]);
 			j++;
 		}
+		free(line);
+		free_p(p_line);
 		i++;
 	}
 	close(fd);
+}
+
+void	free_p(char **p_line)
+{
+	int	i;
+
+	i = 0;
+	while (p_line[i])
+	{
+		free(p_line[i]);
+		i++;
+	}
+	free(p_line);
 }
 
 // no implementation for double type in ft_printf

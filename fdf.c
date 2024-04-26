@@ -86,7 +86,9 @@ int	main(int argc, char **argv)
 
 	//mlx_key_hook(vars.win, key_hook, &vars);
 
-	mlx_destroy_window(p_vars.mlx_ptr, p_vars.win_ptr);	
+	free_2d_arr(maps.map_vec);
+
+	//mlx_destroy_window(p_vars.mlx_ptr, p_vars.win_ptr);	
 }
 
 // called when key up

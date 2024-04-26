@@ -56,7 +56,8 @@ typedef struct
 
 int		init_arrs(t_maps *maps);
 void	init_zaxis(t_maps *maps, char *filename);
-void	free_2d_arr(char **arr);
+void	free_2d_arr(t_vec **arr);
+void	free_p(char **p_line);
 void	printgrid(t_maps *maps);
 double	gradient(double x, double x2, double y, double y2);
 void	calc_vect(t_maps *maps, t_vars *p_vars);
