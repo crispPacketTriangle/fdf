@@ -5,104 +5,69 @@
 // man -M ../man/ mlx_loop
 // valgrind --trace-children=yes ./a.out ../maps/test_maps/t1.fdf
 
-// possible error handling if axes not even
-
-int	key_hook(int keycode, t_vars *vars);
-int	draw(t_vars *p_vars);
-int	mv_origin(t_vars *p_vars);
-int	key_down(int keycode, t_vars *p_vars);
-int	loop_actions(t_vars *p_vars);
+// error handling from set-up funcs
+// 	init_vars
+// 	calc_axes
+// 	init_arrs
+// 	init_zaxis
+// 	calc_vect
 
 int	main(int argc, char **argv)
 {
-	double	g;
-	//void	*mlx_ptr;
-	//void	*win_ptr;
 	t_maps	maps;
 	t_vars	p_vars;
-	int		(*key_ptr)(int k, t_vars *p_vars);
-
-	// redundant
-	key_ptr = &key_hook;
-	p_vars.m = &maps;
-	p_vars.scale = 8;
-	p_vars.originx = 1200.0;
-	p_vars.originy = 200.0;
-	p_vars.toggle_plane = -1;
-	p_vars.toggle_grid = 1;
-	p_vars.z_scale = 2;
-	p_vars.toggle_z = -1;
 
 	if (argc != 2)
-	{
 		return (0);
-	}
+	init_vars(&p_vars, &maps);
 	if (calc_axes(&maps, argv[1]))
 		return (0);
-	//ft_printf("x: %d\ny: %d\n", maps.xaxis, maps.yaxis);
-	///////////////////////////////
 	init_arrs(&maps);
 	init_zaxis(&maps, argv[1]);
 	calc_vect(&maps, &p_vars);
-	//printf("-- %f\n", maps.map_vec[0][0].z);
-	//printgrid(&maps);
-	///////////////////////////////
 	p_vars.mlx_ptr = mlx_init();
 	p_vars.win_ptr = mlx_new_window(p_vars.mlx_ptr, 1200, 800, "cpt");
-	//draw_x_plane(&maps, p_vars.mlx_ptr, p_vars.win_ptr);
-	//draw_y_plane(&maps, p_vars.mlx_ptr, p_vars.win_ptr);
 	draw(&p_vars);
-	//scale(&maps);
-	//c_scale(&maps);
-
-	//draw_x_edges(&maps, p_vars.mlx_ptr, p_vars.win_ptr);
-	//draw_y_edges(&maps, p_vars.mlx_ptr, p_vars.win_ptr);
-	//draw_vecs(&maps, p_vars.mlx_ptr, p_vars.win_ptr);
-
-	// this hook takes the arguments 3 and a bit mask, which means listen specifically
-	// for a key up event
-	mlx_hook(p_vars.win_ptr, 3, 1L<<1, &key_hook, &p_vars);
+	mlx_hook(p_vars.win_ptr, 3, 1L<<1, &key_up, &p_vars);
 	mlx_hook(p_vars.win_ptr, 2, 1L<<0, &key_down, &p_vars);
-	// currently callng draw function every time through loop
-	//mlx_loop_hook(p_vars.mlx_ptr, &draw, &p_vars);
-
 	mlx_loop_hook(p_vars.mlx_ptr, &loop_actions, &p_vars);
-
-
-	// initialises a loop where the window is refreshed and listens for events
 	mlx_loop(p_vars.mlx_ptr);
-	// this is creating a hook into the loop in order to terminate it presumably
-	// since the window is like a mini server that we can call into, hook into?
-	// or just to be able to call a function? like the main logic of the programme
-	// is passed here? exactly this is how we call continuely in the loop
-	//
-	// int		mlx_loop_hook(void *mlx_ptr, int (*f)(), void *param);
-	//
-	// seems like a function pointer is passed and also a pointer that should point
-	// to a struct that is then passed into the function inside mlx_loop_hook()
+}
 
-	//mlx_loop_hook(p_vars.mlx_ptr, &draw, &p_vars);
-
-
-	//mlx_key_hook(vars.win, key_hook, &vars);
-
-	free_2d_arr(maps.map_vec);
-
-	//mlx_destroy_window(p_vars.mlx_ptr, p_vars.win_ptr);	
+void	init_vars(t_vars *p_vars, t_maps *maps)
+{
+	p_vars->m = maps;
+	p_vars->scale = 8;
+	p_vars->originx = 1200.0;
+	p_vars->originy = 200.0;
+	p_vars->toggle_plane = -1;
+	p_vars->toggle_grid = 1;
+	p_vars->z_scale = 2;
+	p_vars->toggle_z = -1;
+	maps->xaxis = 0;
+	maps->yaxis = 0;
 }
 
 // called when key up
-int	key_hook(int keycode, t_vars *p_vars)
+int	key_up(int keycode, t_vars *p_vars)
 {
-	// test keycode on different machines, could vary
-	//printf("%d\n", keycode);
 	if (65307 == keycode)
 	{
-		// todo: free objects
+		free_2d_arr(p_vars->m);
 		mlx_destroy_window(p_vars->mlx_ptr, p_vars->win_ptr);
 		free(p_vars->mlx_ptr);
 		exit(0);
 	}
+
+	g_f_s(p_vars, keycode);
+	p_vars->toggle_key = 0;
+	if (115 == keycode)
+		p_vars->toggle_z = -1;
+	return (0);
+}
+
+void	g_f_s(t_vars *p_vars, int keycode)
+{
 	if (102 == keycode)
 	{
 		p_vars->toggle_plane *= -1;
@@ -115,7 +80,7 @@ int	key_hook(int keycode, t_vars *p_vars)
 	}
 	if (105 == keycode)
 	{
-		p_vars->scale+=2;
+		p_vars->scale += 2;
 		draw(p_vars);
 	}
 	if (111 == keycode)
@@ -126,10 +91,6 @@ int	key_hook(int keycode, t_vars *p_vars)
 			draw(p_vars);
 		}
 	}
-	p_vars->toggle_key = 0;
-	if (115 == keycode)
-		p_vars->toggle_z = -1;
-	return (0);
 }
 
 int	draw(t_vars *p_vars)

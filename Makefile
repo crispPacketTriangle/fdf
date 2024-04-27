@@ -1,4 +1,5 @@
 CC=cc
+# -Wall -Werror -Wextra
 NAME=fdf
 EXT=-L ./lib/ -lft -lmlx -lXext -lX11 -lm
 
