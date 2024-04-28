@@ -2,7 +2,7 @@
 
 Fdf is a project that uses the 42 MiniLibX graphics library to render an isometric, wire-frame projection.
 
-The programme takes as a single input a text file formatted as rows of integers.  For example:
+The programme takes as a single input a text file with the extension .fdf, formatted as rows of integers.  For example:
 
 > 0 0 0 0\
 0 1 1 0\
