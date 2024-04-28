@@ -1,9 +1,9 @@
-CC=cc
+CC=cc -g
 # -Wall -Werror -Wextra
 NAME=fdf
 EXT=-L ./lib/ -lft -lmlx -lXext -lX11 -lm
 
-SRCS=fdf.c fdf_utils.c
+SRCS=fdf.c fdf_utils0.c fdf_utils1.c fdf_utils2.c fdf_utils3.c
 
 OBJS= $(SRCS:.c=.o)
 

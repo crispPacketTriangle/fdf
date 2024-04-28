@@ -27,9 +27,6 @@ typedef struct
 
 typedef struct
 {
-	double	l;
-	double	s;
-	double	c;
 	int		xaxis;
 	int		yaxis;
 	t_vec	**map_vec;
@@ -45,7 +42,6 @@ typedef struct
 	double	x_o;
 	double	y;
 	double	y_o;
-	//int		colour;
 } t_edge;
 
 typedef struct
@@ -79,7 +75,7 @@ void	free_p(char **p_line);
 double	gradient(double x, double x2, double y, double y2);
 void	calc_vect(t_maps *maps, t_vars *p_vars);
 int		calc_axes(t_maps *maps, char *filename);
-int		read_map(t_read *r_vars, char *filename);
+//int		read_map(t_read *r_vars, char *filename);
 void	draw_vecs(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_x_edges(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_y_edges(t_maps *maps, void *mlx_ptr, void *win_ptr);
