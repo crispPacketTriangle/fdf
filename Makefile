@@ -1,5 +1,5 @@
-CC=cc -g
-# -Wall -Werror -Wextra
+CC=cc 
+FLAGS=-Wall -Werror -Wextra
 NAME=fdf
 EXT=-L ./lib/ -lft -lmlx -lXext -lX11 -lm
 
@@ -10,7 +10,7 @@ OBJS= $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-		$(CC) -o $(NAME) $(OBJS) $(EXT)
+		$(CC) -o $(NAME) $(OBJS) $(EXT) $(FLAGS)
 
 clean:
 		rm -rf $(OBJS)

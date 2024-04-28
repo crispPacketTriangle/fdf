@@ -1,32 +1,5 @@
 #include "fdf.h"
 
-void	calc_vect(t_maps *maps, t_vars *p_vars)
-{
-	t_vec	org;
-	int		i;
-	int		j;
-	
-	org.x = p_vars->originx;
-	org.y = p_vars->originy;
-	i = 0;
-	while (i < maps->yaxis)
-	{
-		j = 0;
-		while (j < maps->xaxis)
-		{
-			maps->map_vec[i][j].x = org.x + (j * p_vars->scale);
-			maps->map_vec[i][j].y = org.y + (j * (p_vars->scale / 2)) +
-				(maps->map_vec[i][j].z * -1 *
-					(p_vars->scale / p_vars->z_scale));
-			maps->map_vec[i][j].y_o = org.y + (j * (p_vars->scale / 2));
-			j++;
-		} 
-		org.x -= (p_vars->scale);
-		org.y += (p_vars->scale / 2);
-		i++;
-	}
-}
-
 int	calc_axes(t_maps *maps, char *filename)
 {
 	t_read	r_vars;
@@ -48,9 +21,7 @@ int	calc_axes(t_maps *maps, char *filename)
 		free(r_vars.line);
 		r_vars.line = get_next_line(r_vars.fd);
 	}
-	free(r_vars.line);
-	free_p(r_vars.p_line);
-	close(r_vars.fd);
+	free_all(&r_vars, 1);
 	return (0);
 }
 
@@ -72,11 +43,14 @@ int	init_arrs(t_maps *maps)
 	return (0);
 }
 
-void	init_zaxis(t_maps *maps, char *filename)
+// include error handling as above
+int	init_zaxis(t_maps *maps, char *filename)
 {
 	t_read	r_vars;
 
 	r_vars.fd = open(filename, O_RDONLY);
+	if (r_vars.fd < 0)
+		return (-1);
 	r_vars.i = 0;
 	while (r_vars.i < maps->yaxis)
 	{
@@ -89,11 +63,11 @@ void	init_zaxis(t_maps *maps, char *filename)
 				ft_atoi(r_vars.p_line[r_vars.j]);
 			r_vars.j++;
 		}
-		free(r_vars.line);
-		free_p(r_vars.p_line);
+		free_all(&r_vars, 0);
 		r_vars.i++;
 	}
 	close(r_vars.fd);
+	return (0);
 }
 
 void	free_p(char **p_line)
@@ -107,4 +81,12 @@ void	free_p(char **p_line)
 		i++;
 	}
 	free(p_line);
+}
+
+void	free_all(t_read *r_vars, int end)
+{
+	free(r_vars->line);
+	free_p(r_vars->p_line);
+	if (end)
+		close(r_vars->fd);
 }

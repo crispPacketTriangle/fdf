@@ -17,15 +17,21 @@ int	main(int argc, char **argv)
 {
 	t_maps	maps;
 	t_vars	p_vars;
+	int		err;
 
+	err = 0;
 	if (argc != 2)
 		return (0);
-	init_vars(&p_vars, &maps);
-	if (calc_axes(&maps, argv[1]))
+	if (!(ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1]))))
 		return (0);
-	init_arrs(&maps);
-	init_zaxis(&maps, argv[1]);
+	init_vars(&p_vars, &maps);
+	err += calc_axes(&maps, argv[1]);
+	err += init_arrs(&maps);
+	err += init_zaxis(&maps, argv[1]);
+	if (err < 0)
+		return (0);
 	calc_vect(&maps, &p_vars);
+
 	p_vars.mlx_ptr = mlx_init();
 	p_vars.win_ptr = mlx_new_window(p_vars.mlx_ptr, 1200, 800, "cpt");
 	draw(&p_vars);
@@ -50,3 +56,29 @@ void	init_vars(t_vars *p_vars, t_maps *maps)
 	maps->yaxis = 0;
 }
 
+void	calc_vect(t_maps *maps, t_vars *p_vars)
+{
+	t_vec	org;
+	int		i;
+	int		j;
+	
+	org.x = p_vars->originx;
+	org.y = p_vars->originy;
+	i = 0;
+	while (i < maps->yaxis)
+	{
+		j = 0;
+		while (j < maps->xaxis)
+		{
+			maps->map_vec[i][j].x = org.x + (j * p_vars->scale);
+			maps->map_vec[i][j].y = org.y + (j * (p_vars->scale / 2)) +
+				(maps->map_vec[i][j].z * -1 *
+					(p_vars->scale / p_vars->z_scale));
+			maps->map_vec[i][j].y_o = org.y + (j * (p_vars->scale / 2));
+			j++;
+		} 
+		org.x -= (p_vars->scale);
+		org.y += (p_vars->scale / 2);
+		i++;
+	}
+}

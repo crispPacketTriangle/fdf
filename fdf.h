@@ -64,7 +64,7 @@ typedef struct
 
 void	init_vars(t_vars *p_vars, t_maps *maps);
 int		init_arrs(t_maps *maps);
-void	init_zaxis(t_maps *maps, char *filename);
+int		init_zaxis(t_maps *maps, char *filename);
 int		key_up(int keycode, t_vars *vars);
 int		key_down(int keycode, t_vars *p_vars);
 int		draw(t_vars *p_vars);
@@ -76,7 +76,7 @@ void	free_p(char **p_line);
 double	gradient(double x, double x2, double y, double y2);
 void	calc_vect(t_maps *maps, t_vars *p_vars);
 int		calc_axes(t_maps *maps, char *filename);
-//int		read_map(t_read *r_vars, char *filename);
+void	free_all(t_read *r_vars, int end);
 void	draw_vecs(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_x_edges(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_y_edges(t_maps *maps, void *mlx_ptr, void *win_ptr);
