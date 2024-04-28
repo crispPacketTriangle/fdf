@@ -19,5 +19,5 @@ Toggling the edges gives some nice aesthetic options.  However, it was functiona
 
 The Makefile complies the sources and links both Libft and the MiniLibX library.  Both libraries must be compiled separately and placed in the lib folder.  Additionally some dependencies must also be included.  The Makefile will run the following commands (specific to Linux). 
 
-> cc -Wall -Werror -Wextra fdf.c fdf_utils.c ... fdf_utils4.c -L ./lib/ -lft -lmlx *-lXext -lX11 -lm*
+> cc -Wall -Werror -Wextra fdf.c fdf_utils0.c ... fdf_utils3.c -L ./lib/ -lft -lmlx *-lXext -lX11 -lm*
 
