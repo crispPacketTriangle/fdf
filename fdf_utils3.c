@@ -48,7 +48,8 @@ int	key_down(int keycode, t_vars *p_vars)
 {
 	if (115 == keycode)
 		p_vars->toggle_z *= -1;
-	if (65361 == keycode || 65362 == keycode || 65363 == keycode || 65364 == keycode)
+	if (65361 == keycode || 65362 == keycode ||
+			65363 == keycode || 65364 == keycode)
 	{
 		p_vars->toggle_key = 1;
 		p_vars->code = keycode;

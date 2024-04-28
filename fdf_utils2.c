@@ -11,7 +11,8 @@ void	draw_vecs(t_maps *maps, void *mlx_ptr, void *win_ptr)
 		j = 0;
 		while (j < maps->xaxis)
 		{
-			mlx_pixel_put(mlx_ptr, win_ptr, (int)maps->map_vec[i][j].x, (int)maps->map_vec[i][j].y, 0x00FFFFFF); //0x00888825
+			mlx_pixel_put(mlx_ptr, win_ptr, (int)maps->map_vec[i][j].x,
+					(int)maps->map_vec[i][j].y, 0x00FFFFFF);
 			j++;
 		}
 		i++;
@@ -22,19 +23,21 @@ void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	t_edge	ed;
 	
-	ed.i = 0;
+	ed_setup(&ed, 0x00003300);
 	while (ed.i < maps->yaxis)
 	{
 		ed.j = 0;
 		while (ed.j < maps->xaxis - 1)
 		{
-			ed.g_o = gradient(maps->map_vec[ed.i][ed.j].x, maps->map_vec[ed.i][ed.j + 1].x,
-					maps->map_vec[ed.i][ed.j].y_o, maps->map_vec[ed.i][ed.j + 1].y_o);
+			ed.g_o = gradient(maps->map_vec[ed.i][ed.j].x,
+					maps->map_vec[ed.i][ed.j + 1].x, maps->map_vec[ed.i]
+						[ed.j].y_o, maps->map_vec[ed.i][ed.j + 1].y_o);
 			ed.x = maps->map_vec[ed.i][ed.j].x;
 			ed.y_o = maps->map_vec[ed.i][ed.j].y_o;
 			while (ed.x < maps->map_vec[ed.i][ed.j + 1].x)
 			{
-				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y_o, 0x00003300);
+				mlx_pixel_put(mlx_ptr, win_ptr,
+						(int)ed.x, (int)ed.y_o, ed.col);
 				ed.x++;
 				ed.y_o += ed.g_o;
 			}
@@ -48,19 +51,21 @@ void	draw_y_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	t_edge	ed;
 
-	ed.i = 0;
+	ed_setup(&ed, 0x00003300);
 	while (ed.i < maps->yaxis - 1)
 	{
 		ed.j = 0;
 		while (ed.j < maps->xaxis)
 		{
-			ed.g_o = gradient(maps->map_vec[ed.i][ed.j].y_o, maps->map_vec[ed.i + 1][ed.j].y_o,
-					maps->map_vec[ed.i][ed.j].x, maps->map_vec[ed.i + 1][ed.j].x);		
+			ed.g_o = gradient(maps->map_vec[ed.i][ed.j].y_o,
+					maps->map_vec[ed.i + 1][ed.j].y_o, maps->map_vec[ed.i]
+						[ed.j].x, maps->map_vec[ed.i + 1][ed.j].x);		
 			ed.x = maps->map_vec[ed.i][ed.j].x;
 			ed.y_o = maps->map_vec[ed.i][ed.j].y_o;
 			while (ed.y_o < maps->map_vec[ed.i + 1][ed.j].y_o)
 			{
-				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y_o, 0x00003300);
+				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x,
+						(int)ed.y_o, ed.col);
 				ed.x+= ed.g_o;
 				ed.y_o++;
 			}

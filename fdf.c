@@ -43,6 +43,7 @@ void	init_vars(t_vars *p_vars, t_maps *maps)
 	p_vars->originy = 200.0;
 	p_vars->toggle_plane = -1;
 	p_vars->toggle_grid = 1;
+	p_vars->toggle_key = 0;
 	p_vars->z_scale = 2;
 	p_vars->toggle_z = -1;
 	maps->xaxis = 0;

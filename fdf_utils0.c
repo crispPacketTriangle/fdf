@@ -2,25 +2,27 @@
 
 void	calc_vect(t_maps *maps, t_vars *p_vars)
 {
-	t_vec	origin;
+	t_vec	org;
 	int		i;
 	int		j;
 	
-	origin.x = p_vars->originx;
-	origin.y = p_vars->originy;
+	org.x = p_vars->originx;
+	org.y = p_vars->originy;
 	i = 0;
 	while (i < maps->yaxis)
 	{
 		j = 0;
 		while (j < maps->xaxis)
 		{
-			maps->map_vec[i][j].x = origin.x + (j * p_vars->scale);
-			maps->map_vec[i][j].y = origin.y + (j * (p_vars->scale / 2)) + (maps->map_vec[i][j].z * -1 * (p_vars->scale / p_vars->z_scale)); // rather than 2 multiply by #define SCALE
-			maps->map_vec[i][j].y_o = origin.y + (j * (p_vars->scale / 2));
+			maps->map_vec[i][j].x = org.x + (j * p_vars->scale);
+			maps->map_vec[i][j].y = org.y + (j * (p_vars->scale / 2)) +
+				(maps->map_vec[i][j].z * -1 *
+					(p_vars->scale / p_vars->z_scale));
+			maps->map_vec[i][j].y_o = org.y + (j * (p_vars->scale / 2));
 			j++;
 		} 
-		origin.x -= (p_vars->scale);
-		origin.y += (p_vars->scale / 2);
+		org.x -= (p_vars->scale);
+		org.y += (p_vars->scale / 2);
 		i++;
 	}
 }
@@ -83,7 +85,8 @@ void	init_zaxis(t_maps *maps, char *filename)
 		r_vars.j = 0;
 		while (r_vars.j < maps->xaxis)
 		{
-			maps->map_vec[r_vars.i][r_vars.j].z = ft_atoi(r_vars.p_line[r_vars.j]);
+			maps->map_vec[r_vars.i][r_vars.j].z =
+				ft_atoi(r_vars.p_line[r_vars.j]);
 			r_vars.j++;
 		}
 		free(r_vars.line);

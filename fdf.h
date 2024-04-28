@@ -34,6 +34,7 @@ typedef struct
 
 typedef struct
 {
+	int		col;
 	int		i;
 	int		j;
 	double	g;
@@ -82,6 +83,7 @@ void	draw_y_edges(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	flip_y_edge(t_edge *ed, t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_y_plane(t_maps *maps, void *mlx_ptr, void *win_ptr);
+void	ed_setup(t_edge *ed, int col);
 // int		mod_rgb(int val, double n, int dr);
 // int		pix_colour(int val, t_maps *maps, t_edge *ed);
 // void	c_scale(t_maps *maps);
