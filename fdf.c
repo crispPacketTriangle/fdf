@@ -24,7 +24,6 @@ int	main(int argc, char **argv)
 	if (err < 0)
 		return (0);
 	calc_vect(&maps, &p_vars);
-
 	p_vars.mlx_ptr = mlx_init();
 	p_vars.win_ptr = mlx_new_window(p_vars.mlx_ptr, 1200, 800, "cpt");
 	draw(&p_vars);
