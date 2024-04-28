@@ -2,7 +2,12 @@
 
 double	gradient(double x, double x2, double y, double y2)
 {
-	return ((y2 - y) / (x2 - x));
+	//double grd;
+
+	if (!(0 == x2 - x))
+		return ((y2 - y) / (x2 - x));
+	else
+		return(0);
 }
 
 void	draw_x_edges(t_maps *maps, void *mlx_ptr, void *win_ptr)
