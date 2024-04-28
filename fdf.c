@@ -6,13 +6,6 @@
 // man -M ../man/ mlx_loop
 // valgrind --trace-children=yes ./a.out ../maps/test_maps/t1.fdf
 
-// error handling from set-up funcs
-// 	init_vars
-// 	calc_axes
-// 	init_arrs
-// 	init_zaxis
-// 	calc_vect
-
 int	main(int argc, char **argv)
 {
 	t_maps	maps;
