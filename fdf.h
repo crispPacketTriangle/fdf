@@ -44,13 +44,15 @@ typedef struct
 	double	x_o;
 	double	y;
 	double	y_o;
-
 	double	exx;
 	double	exx2;
 	double	exy2;
 	double	eyy;
 	double	eyy2;
 	double	eyx2;
+	double	yy;
+	double	xy2;
+	double	yy2;
 } t_edge;
 
 typedef struct
@@ -92,6 +94,5 @@ void	flip_y_edge(t_edge *ed, t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_y_plane(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	ed_setup(t_maps *maps, t_edge *ed, int key);
-void	ed_setupold(t_edge *ed, int col);
 
 #endif

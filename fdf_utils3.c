@@ -79,3 +79,4 @@ void	free_2d_arr(t_maps *map)
 	}
 	free(map->map_vec);
 }
+

@@ -23,15 +23,15 @@ void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	t_edge	ed;
 	
-	ed_setupold(&ed, 0x00003300);
+	ed.col = 0x00003300;
+	ed.i = 0;
 	while (ed.i < maps->yaxis)
 	{
 		ed.j = 0;
 		while (ed.j < maps->xaxis - 1)
 		{
-			ed.g_o = gradient(maps->map_vec[ed.i][ed.j].x,
-					maps->map_vec[ed.i][ed.j + 1].x, maps->map_vec[ed.i]
-						[ed.j].y_o, maps->map_vec[ed.i][ed.j + 1].y_o);
+			ed_setup(maps, &ed, 0);
+			ed.g_o = gradient(ed.exx, ed.exx2, ed.yy, ed.xy2);
 			ed.x = maps->map_vec[ed.i][ed.j].x;
 			ed.y_o = maps->map_vec[ed.i][ed.j].y_o;
 			while (ed.x < maps->map_vec[ed.i][ed.j + 1].x)
@@ -51,15 +51,15 @@ void	draw_y_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	t_edge	ed;
 
-	ed_setupold(&ed, 0x00003300);
+	ed.col = 0x00003300;
+	ed.i = 0;
 	while (ed.i < maps->yaxis - 1)
 	{
 		ed.j = 0;
 		while (ed.j < maps->xaxis)
 		{
-			ed.g_o = gradient(maps->map_vec[ed.i][ed.j].y_o,
-					maps->map_vec[ed.i + 1][ed.j].y_o, maps->map_vec[ed.i]
-						[ed.j].x, maps->map_vec[ed.i + 1][ed.j].x);		
+			ed_setup(maps, &ed, 1);
+			ed.g_o = gradient(ed.yy, ed.yy2, ed.exx, ed.eyx2);
 			ed.x = maps->map_vec[ed.i][ed.j].x;
 			ed.y_o = maps->map_vec[ed.i][ed.j].y_o;
 			while (ed.y_o < maps->map_vec[ed.i + 1][ed.j].y_o)
@@ -116,16 +116,3 @@ int	mv_origin(t_vars *p_vars)
 	return(0);
 }
 
-// x_plane
-// maps->map_vec[ed.i][ed.j].x,
-// maps->map_vec[ed.i][ed.j + 1].x, 
-// maps->map_vec[ed.i][ed.j].y_o, 
-// maps->map_vec[ed.i][ed.j + 1].y_o
-//
-// y_plane
-// maps->map_vec[ed.i][ed.j].y_o,
-// maps->map_vec[ed.i + 1][ed.j].y_o, 
-// maps->map_vec[ed.i][ed.j].x, 
-// maps->map_vec[ed.i + 1][ed.j].x
-//
-//

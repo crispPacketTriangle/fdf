@@ -74,3 +74,4 @@ void	calc_vect(t_maps *maps, t_vars *p_vars)
 		i++;
 	}
 }
+

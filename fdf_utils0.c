@@ -43,7 +43,6 @@ int	init_arrs(t_maps *maps)
 	return (0);
 }
 
-// include error handling as above
 int	init_zaxis(t_maps *maps, char *filename)
 {
 	t_read	r_vars;
@@ -90,3 +89,4 @@ void	free_all(t_read *r_vars, int end)
 	if (end)
 		close(r_vars->fd);
 }
+
