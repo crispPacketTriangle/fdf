@@ -23,7 +23,7 @@ void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	t_edge	ed;
 	
-	ed_setup(&ed, 0x00003300);
+	ed_setupold(&ed, 0x00003300);
 	while (ed.i < maps->yaxis)
 	{
 		ed.j = 0;
@@ -51,7 +51,7 @@ void	draw_y_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	t_edge	ed;
 
-	ed_setup(&ed, 0x00003300);
+	ed_setupold(&ed, 0x00003300);
 	while (ed.i < maps->yaxis - 1)
 	{
 		ed.j = 0;
@@ -115,3 +115,17 @@ int	mv_origin(t_vars *p_vars)
 	}
 	return(0);
 }
+
+// x_plane
+// maps->map_vec[ed.i][ed.j].x,
+// maps->map_vec[ed.i][ed.j + 1].x, 
+// maps->map_vec[ed.i][ed.j].y_o, 
+// maps->map_vec[ed.i][ed.j + 1].y_o
+//
+// y_plane
+// maps->map_vec[ed.i][ed.j].y_o,
+// maps->map_vec[ed.i + 1][ed.j].y_o, 
+// maps->map_vec[ed.i][ed.j].x, 
+// maps->map_vec[ed.i + 1][ed.j].x
+//
+//

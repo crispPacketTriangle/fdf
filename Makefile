@@ -1,4 +1,5 @@
-CC=cc 
+CC=cc -g
+# remove -g
 FLAGS=-Wall -Werror -Wextra
 NAME=fdf
 EXT=-L ./lib/ -lft -lmlx -lXext -lX11 -lm
