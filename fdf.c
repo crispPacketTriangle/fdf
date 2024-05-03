@@ -1,4 +1,5 @@
 #include "fdf.h"
+#include <X11/Xlib.h>
 
 // -lm required to link math library
 // cc fdf.c fdf_utils0.c fdf_utils1.c fdf_utils2.c fdf_utils3.c 
@@ -26,11 +27,18 @@ int	main(int argc, char **argv)
 	calc_vect(&maps, &p_vars);
 	p_vars.mlx_ptr = mlx_init();
 	p_vars.win_ptr = mlx_new_window(p_vars.mlx_ptr, 1200, 800, "cpt");
+	
+	// Display *display = XOpenDisplay(NULL);
+	// Atom wmDeleteWindow = XInternAtom(display, "WM_DELETE_WINDOW", False);
+	// ft_printf("<%d>", (long)wmDeleteWindow);
+
 	draw(&p_vars);
 	mlx_hook(p_vars.win_ptr, 3, 1L<<1, &key_up, &p_vars);
 	mlx_hook(p_vars.win_ptr, 2, 1L<<0, &key_down, &p_vars);
+	mlx_hook(p_vars.win_ptr, 17, 1L<<17, &terminator, &p_vars);
 	mlx_loop_hook(p_vars.mlx_ptr, &loop_actions, &p_vars);
 	mlx_loop(p_vars.mlx_ptr);
+
 }
 
 void	init_vars(t_vars *p_vars, t_maps *maps)
@@ -73,5 +81,14 @@ void	calc_vect(t_maps *maps, t_vars *p_vars)
 		org.y += (p_vars->scale / 2);
 		i++;
 	}
+}
+
+int	terminator(t_vars *p_vars)
+{
+	free_2d_arr(p_vars->m);
+	mlx_destroy_window(p_vars->mlx_ptr, p_vars->win_ptr);
+	free(p_vars->mlx_ptr);
+	ft_printf("Hasta la vista, baby!");
+	exit(0);
 }
 

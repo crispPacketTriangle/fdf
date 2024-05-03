@@ -80,6 +80,7 @@ int		key_down(int keycode, t_vars *p_vars);
 int		draw(t_vars *p_vars);
 int		mv_origin(t_vars *p_vars);
 int		loop_actions(t_vars *p_vars);
+int		terminator(t_vars *p_vars);
 void	g_f_s(t_vars *p_vars, int keycode);
 void	free_2d_arr(t_maps *map);
 void	free_p(char **p_line);
