@@ -35,10 +35,11 @@ int	main(int argc, char **argv)
 	draw(&p_vars);
 	mlx_hook(p_vars.win_ptr, 3, 1L<<1, &key_up, &p_vars);
 	mlx_hook(p_vars.win_ptr, 2, 1L<<0, &key_down, &p_vars);
-	mlx_hook(p_vars.win_ptr, 17, 1L<<17, &terminator, &p_vars);
+	mlx_hook(p_vars.win_ptr, DestroyNotify, StructureNotifyMask, &terminator, &p_vars);
 	mlx_loop_hook(p_vars.mlx_ptr, &loop_actions, &p_vars);
 	mlx_loop(p_vars.mlx_ptr);
 
+	return (0);
 }
 
 void	init_vars(t_vars *p_vars, t_maps *maps)
@@ -85,10 +86,10 @@ void	calc_vect(t_maps *maps, t_vars *p_vars)
 
 int	terminator(t_vars *p_vars)
 {
+	ft_printf("Hasta la vista, baby!");
 	free_2d_arr(p_vars->m);
 	mlx_destroy_window(p_vars->mlx_ptr, p_vars->win_ptr);
 	free(p_vars->mlx_ptr);
-	ft_printf("Hasta la vista, baby!");
 	exit(0);
 }
 

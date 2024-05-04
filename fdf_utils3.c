@@ -5,7 +5,9 @@ int	key_up(int keycode, t_vars *p_vars)
 	if (65307 == keycode)
 	{
 		free_2d_arr(p_vars->m);
+		//XCloseDisplay(p_vars->mlx_ptr); // what should be passed to this func
 		mlx_destroy_window(p_vars->mlx_ptr, p_vars->win_ptr);
+		mlx_destroy_display(p_vars->mlx_ptr);
 		free(p_vars->mlx_ptr);
 		exit(0);
 	}

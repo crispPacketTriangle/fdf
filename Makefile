@@ -1,8 +1,7 @@
-CC=cc -g
-# remove -g
+CC=cc
 FLAGS=-Wall -Werror -Wextra
 NAME=fdf
-EXT=-L ./lib/ -lft -lmlx -lXext -lX11 -lm
+EXT=-L ./lib/ -L ./minilibx-linux/ -Lmlx_Linux -lft -lmlx -lXext -lX11 -lz -lm
 
 SRCS=fdf.c fdf_utils0.c fdf_utils1.c fdf_utils2.c fdf_utils3.c
 

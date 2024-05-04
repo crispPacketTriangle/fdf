@@ -6,7 +6,9 @@
 # include <fcntl.h>
 # include <math.h>
 # include "mlx.h"
+//# include <mlx.h>
 # include "libft.h"
+#include <X11/Xlib.h>
 
 typedef struct
 {
