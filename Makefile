@@ -2,7 +2,7 @@ CC=cc
 FLAGS=-Wall -Werror -Wextra
 NAME=fdf
 EXT=-L ./lib/ -L ./minilibx-linux/ -Lmlx_Linux -lft -lmlx -lXext -lX11 -lz -lm
-LOGO=bash logo.sh
+LOGO=bash /home/lworden/42/fdf/logo.sh
 
 SRCS=fdf.c fdf_utils0.c fdf_utils1.c fdf_utils2.c fdf_utils3.c fdf_utils4.c
 
