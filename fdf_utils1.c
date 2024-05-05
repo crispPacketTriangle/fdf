@@ -62,18 +62,25 @@ void	draw_y_edges(t_maps *maps, void *mlx_ptr, void *win_ptr)
 			{
 				while (ed.x > maps->map_vec[ed.i + 1][ed.j].x)
 				{
-					//printf("vals: %f - %f\n", ed.x, maps->map_vec[ed.i + 1][ed.j].x);
 					mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, ed.col);
 					ed.x--;
-					//printf("vals: %f - %f\n", ed.x, maps->map_vec[ed.i + 1][ed.j].x);
 				}
-				//printf("end\n");
 			}
 			else if (maps->map_vec[ed.i][ed.j].y > maps->map_vec[ed.i + 1][ed.j].y)
 				flip_y_edge(&ed, maps, mlx_ptr, win_ptr);
 			ed.j++;
 		}
 		ed.i++;
+	}
+}
+
+// put with other draw funcs
+void	flat(t_maps *maps, t_edge *ed, void *mlx_ptr, void *win_ptr)
+{
+	while (ed->x > maps->map_vec[ed->i + 1][ed->j].x)
+	{
+		mlx_pixel_put(mlx_ptr, win_ptr, (int)ed->x, (int)ed->y, ed->col);
+		ed->x--;
 	}
 }
 

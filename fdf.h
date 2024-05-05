@@ -93,6 +93,7 @@ void	free_all(t_read *r_vars, int end);
 void	draw_vecs(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_x_edges(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_y_edges(t_maps *maps, void *mlx_ptr, void *win_ptr);
+void	flat(t_maps *maps, t_edge *ed, void *mlx_ptr, void *win_ptr);
 void	flip_y_edge(t_edge *ed, t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr);
 void	draw_y_plane(t_maps *maps, void *mlx_ptr, void *win_ptr);
