@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf_utils2.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lworden <lworden@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/05 20:53:59 by lworden           #+#    #+#             */
+/*   Updated: 2024/05/05 20:54:02 by lworden          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 void	draw_vecs(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	while (i < maps->yaxis)
 	{
@@ -12,7 +24,7 @@ void	draw_vecs(t_maps *maps, void *mlx_ptr, void *win_ptr)
 		while (j < maps->xaxis)
 		{
 			mlx_pixel_put(mlx_ptr, win_ptr, (int)maps->map_vec[i][j].x,
-					(int)maps->map_vec[i][j].y, 0x00FFFFFF);
+				(int)maps->map_vec[i][j].y, 0x00FFFFFF);
 			j++;
 		}
 		i++;
@@ -22,7 +34,7 @@ void	draw_vecs(t_maps *maps, void *mlx_ptr, void *win_ptr)
 void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 {
 	t_edge	ed;
-	
+
 	ed.col = 0x00003300;
 	ed.i = 0;
 	while (ed.i < maps->yaxis)
@@ -37,7 +49,7 @@ void	draw_x_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 			while (ed.x < maps->map_vec[ed.i][ed.j + 1].x)
 			{
 				mlx_pixel_put(mlx_ptr, win_ptr,
-						(int)ed.x, (int)ed.y_o, ed.col);
+					(int)ed.x, (int)ed.y_o, ed.col);
 				ed.x++;
 				ed.y_o += ed.g_o;
 			}
@@ -65,8 +77,8 @@ void	draw_y_plane(t_maps *maps, void *mlx_ptr, void *win_ptr)
 			while (ed.y_o < maps->map_vec[ed.i + 1][ed.j].y_o)
 			{
 				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x,
-						(int)ed.y_o, ed.col);
-				ed.x+= ed.g_o;
+					(int)ed.y_o, ed.col);
+				ed.x += ed.g_o;
 				ed.y_o++;
 			}
 			ed.j++;
@@ -108,11 +120,10 @@ int	mv_origin(t_vars *p_vars)
 	}
 	else
 	{
-		if (65362 == p_vars->code && p_vars->z_scale > 1)
-			p_vars->z_scale -= 0.001;
-		if (65364 == p_vars->code && p_vars->z_scale < 9)
-			p_vars->z_scale += 0.001;
+		if (65362 == p_vars->code && p_vars->z_s > 1)
+			p_vars->z_s -= 0.001;
+		if (65364 == p_vars->code && p_vars->z_s < 9)
+			p_vars->z_s += 0.001;
 	}
-	return(0);
+	return (0);
 }
-

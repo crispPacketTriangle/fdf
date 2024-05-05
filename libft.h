@@ -6,7 +6,7 @@
 /*   By: lworden <lworden@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:17:54 by lworden           #+#    #+#             */
-/*   Updated: 2024/04/26 22:56:45 by lworden          ###   ########.fr       */
+/*   Updated: 2024/05/05 21:03:43 by lworden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		ft_isascii(int c);
 int		ft_isprint(int c);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
-size_t		ft_strlen(const char *str);
+size_t	ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
 int		ft_toupper(int c);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf_utils0.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lworden <lworden@student.42berlin.de>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/05 20:32:50 by lworden           #+#    #+#             */
+/*   Updated: 2024/05/05 20:47:08 by lworden          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int	calc_axes(t_maps *maps, char *filename)
@@ -28,7 +40,7 @@ int	calc_axes(t_maps *maps, char *filename)
 int	init_arrs(t_maps *maps)
 {
 	int	i;
-	
+
 	maps->map_vec = malloc(maps->yaxis * sizeof(t_vec *));
 	if (!maps->map_vec)
 		return (-1);
@@ -58,41 +70,23 @@ int	init_zaxis(t_maps *maps, char *filename)
 		r_vars.j = 0;
 		while (r_vars.j < maps->xaxis)
 		{
-			maps->map_vec[r_vars.i][r_vars.j].z =
-				ft_atoi(r_vars.p_line[r_vars.j]);
+			maps->map_vec[r_vars.i][r_vars.j].z
+				= ft_atoi(r_vars.p_line[r_vars.j]);
 			r_vars.j++;
 		}
 		free_all(&r_vars, 0);
 		r_vars.i++;
 	}
-	while (r_vars.line)
-	{
-		r_vars.line = get_next_line(r_vars.fd);
-		free(r_vars.line);
-	}
-	//free_all(&r_vars, 1);
+	flush_gnl(&r_vars);
 	close(r_vars.fd);
 	return (0);
 }
 
-void	free_p(char **p_line)
+void	flush_gnl(t_read *r_vars)
 {
-	int	i;
-
-	i = 0;
-	while (p_line[i])
+	while (r_vars->line)
 	{
-		free(p_line[i]);
-		i++;
+		r_vars->line = get_next_line(r_vars->fd);
+		free(r_vars->line);
 	}
-	free(p_line);
 }
-
-void	free_all(t_read *r_vars, int end)
-{
-	free(r_vars->line);
-	free_p(r_vars->p_line);
-	if (end)
-		close(r_vars->fd);
-}
-
