@@ -65,6 +65,12 @@ int	init_zaxis(t_maps *maps, char *filename)
 		free_all(&r_vars, 0);
 		r_vars.i++;
 	}
+	while (r_vars.line)
+	{
+		r_vars.line = get_next_line(r_vars.fd);
+		free(r_vars.line);
+	}
+	//free_all(&r_vars, 1);
 	close(r_vars.fd);
 	return (0);
 }

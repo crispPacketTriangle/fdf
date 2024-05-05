@@ -7,10 +7,7 @@ double	gradient(double x, double x2, double y, double y2)
 	if (!(0 == x2 - x))
 		return ((y2 - y) / (x2 - x));
 	else
-	{
-		gr = (y2 > y) ? INFINITY : -INFINITY;
-		return (gr);
-	}
+		return (1);
 }
 
 void	draw_x_edges(t_maps *maps, void *mlx_ptr, void *win_ptr)
@@ -25,14 +22,14 @@ void	draw_x_edges(t_maps *maps, void *mlx_ptr, void *win_ptr)
 		while (ed.j < maps->xaxis - 1)
 		{
 			ed_setup(maps, &ed, 0);
-			ed.g = gradient(ed.exx, ed.exx2, ed.eyy, ed.exy2);
+			ed.g = gradient(ed.exx, ed.exx2, ed.eyy, ed.exy2 );
 			ed.x = maps->map_vec[ed.i][ed.j].x;
 			ed.y = maps->map_vec[ed.i][ed.j].y;
 			while (ed.x < maps->map_vec[ed.i][ed.j + 1].x)
 			{
 				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, ed.col);
-				ed.x++;
-				ed.y += ed.g;
+				ed.x+=0.5;
+				ed.y += ed.g/2;
 			}
 			ed.j++;
 		}
@@ -58,10 +55,21 @@ void	draw_y_edges(t_maps *maps, void *mlx_ptr, void *win_ptr)
 			while (ed.y < maps->map_vec[ed.i + 1][ed.j].y)
 			{
 				mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, ed.col);
-				ed.x+= ed.g;
-				ed.y++;
+				ed.x += ed.g/2;
+				ed.y += 0.5;
 			}
-			if (maps->map_vec[ed.i][ed.j].y > maps->map_vec[ed.i + 1][ed.j].y)
+			if (ed.y == maps->map_vec[ed.i + 1][ed.j].y)
+			{
+				while (ed.x > maps->map_vec[ed.i + 1][ed.j].x)
+				{
+					//printf("vals: %f - %f\n", ed.x, maps->map_vec[ed.i + 1][ed.j].x);
+					mlx_pixel_put(mlx_ptr, win_ptr, (int)ed.x, (int)ed.y, ed.col);
+					ed.x--;
+					//printf("vals: %f - %f\n", ed.x, maps->map_vec[ed.i + 1][ed.j].x);
+				}
+				//printf("end\n");
+			}
+			else if (maps->map_vec[ed.i][ed.j].y > maps->map_vec[ed.i + 1][ed.j].y)
 				flip_y_edge(&ed, maps, mlx_ptr, win_ptr);
 			ed.j++;
 		}

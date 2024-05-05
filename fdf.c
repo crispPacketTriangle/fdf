@@ -15,19 +15,21 @@ int	main(int argc, char **argv)
 
 	err = 0;
 	if (argc != 2)
-		return (0);
+		return (1);
 	if (!(ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1]))))
-		return (0);
+		return (1);
 	init_vars(&p_vars, &maps);
 	err += calc_axes(&maps, argv[1]);
 	err += init_arrs(&maps);
 	err += init_zaxis(&maps, argv[1]);
 	if (err < 0)
-		return (0);
+		return (1);
 	calc_vect(&maps, &p_vars);
 	p_vars.mlx_ptr = mlx_init();
+	if (!p_vars.mlx_ptr)
+		return (1);
 	p_vars.win_ptr = mlx_new_window(p_vars.mlx_ptr, 1200, 800, "cpt");
-	
+	//void *peter = mlx_new_image(p_vars.mlx_ptr, 10, 10);	
 	// Display *display = XOpenDisplay(NULL);
 	// Atom wmDeleteWindow = XInternAtom(display, "WM_DELETE_WINDOW", False);
 	// ft_printf("<%d>", (long)wmDeleteWindow);
@@ -38,7 +40,7 @@ int	main(int argc, char **argv)
 	mlx_hook(p_vars.win_ptr, DestroyNotify, StructureNotifyMask, &terminator, &p_vars);
 	mlx_loop_hook(p_vars.mlx_ptr, &loop_actions, &p_vars);
 	mlx_loop(p_vars.mlx_ptr);
-
+	
 	return (0);
 }
 
@@ -86,9 +88,10 @@ void	calc_vect(t_maps *maps, t_vars *p_vars)
 
 int	terminator(t_vars *p_vars)
 {
-	ft_printf("Hasta la vista, baby!");
+	ft_printf("Hasta la vista, baby!\n");
 	free_2d_arr(p_vars->m);
 	mlx_destroy_window(p_vars->mlx_ptr, p_vars->win_ptr);
+	mlx_destroy_display(p_vars->mlx_ptr);
 	free(p_vars->mlx_ptr);
 	exit(0);
 }
